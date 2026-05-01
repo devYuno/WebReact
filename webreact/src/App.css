@@ -10,25 +10,38 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color:white;
 
   & h2 {
     margin-bottom: 1rem;
   }
 
   & input {
-    width: 10rem;
+    width: 12rem;
     padding: .3rem .5rem;
     border-radius: 15px;
     margin: .2rem 0;
   }
 
   & button {
-    width: 10rem;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    width: 12rem;
     padding: .3rem 1rem;
     border-radius: 15px;
     margin: 1rem 0;
     cursor: pointer;
+
+    &:hover {
+      background-color: rgb(35, 35, 35);
+    }
+
+    &:active {
+      background-color: rgb(63, 63, 63);
+    }
+    
   }
+
 
   &.auth {
     justify-content: center;
@@ -38,6 +51,9 @@
 
 .message {
     margin: 1rem;
+    padding: .5rem;
+    background-color: rgb(255, 208, 208);
+    border-radius: 15px;
   }
 
 .modal {

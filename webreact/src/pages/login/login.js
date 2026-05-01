@@ -1,19 +1,14 @@
+import { Link } from 'react-router-dom';
 import React from 'react';
 import '../../App.css';
-import { Link, useNavigate } from 'react-router-dom';
-import '../../App.css';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import Firebase from '../../Firebase.js';
 
-// Gambiarra feia que eu fiz para navegar dentro de classe
-function withNavigation(Component) {
-  return (props) => {
-    const navigate = useNavigate();
-    return <Component {...props} navigate={navigate} />;
-  };
-}
+const auth = getAuth(Firebase)
 
-const credenciais = {
-    emailReal: 'pucpr@gmail.com',
-    senhaReal: '12345'
+const erros = {
+    "auth/invalid-credential" : "Login inválido",
+    "auth/invalid-email" : "Login inválido"
 }
 
 class Login extends React.Component {
@@ -27,24 +22,27 @@ class Login extends React.Component {
         }
     }
 
-    setEmail(event) {
-        let email = event.target.value
-        this.setState({ email: email })
-    }
+    async acessar() {
+        const { email, senha } = this.state;
 
-    setSenha(event) {
-        let senha = event.target.value
-        this.setState({ senha: senha })
-    }
+        if ( !email?.trim() || !senha?.trim()) {
+            this.setState({ message: "Todos os dados devem ser preenchidos!" });
+            return;
+        }
 
-    acessar() {
-        if (this.state.email === credenciais.emailReal && this.state.senha === credenciais.senhaReal) {
+        try {
+            const userDto = { email, senha }
+
+            await signInWithEmailAndPassword(auth, userDto.email, userDto.senha )
+
             this.setState({ message: "Acesso liberado" })
 
-            this.props.navigate("/");
+            window.location.href = '/';
         }
-        else {
-            this.setState({ message: "Acesso negado" })
+        catch(e) {
+            console.log(e.code)
+            console.log(e.message)
+            this.setState({ message: erros[e.code] || "Não foi possivel realizar o login."})
         }
     }
 
@@ -53,15 +51,15 @@ class Login extends React.Component {
             <div className='page auth'>
                 <div className='modal'>
                     <h2>Login</h2>
-                    <input id='input_email' name='email' type='text' onChange={(e) => { this.setEmail(e) }}></input>
-                    <input id='input_senha' name='senha' type='password' onChange={(e) => { this.setSenha(e) }}></input>
+                    <input id='input_email' name='email' type='text' placeholder='Email' onChange={(e) => this.setState({ email: e.target.value }) }></input>
+                    <input id='input_senha' name='senha' type='password'  placeholder='Senha' onChange={(e) => this.setState({ senha: e.target.value })}></input>
                     <button id='btn_acessar' onClick={(e) => { this.acessar(e) }}>Acessar</button>
                     <Link className="link" to="/register">Não tenho cadastro</Link>
-                    <span className='message'>{this.state.message}</span>
+                    {this.state.message && <span className='message'>{this.state.message}</span>}
                 </div>
             </div>
         )
     }
 }
 
-export default withNavigation(Login);
+export default Login;
