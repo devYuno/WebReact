@@ -57,17 +57,35 @@ class Home extends React.Component {
         const { user } = this.state;
 
         return (
-            <div className="page">
-                {user ? (
-                    <div>
-                        <h1>Bem-vindo, {user.nome} {user.sobrenome}</h1>
-                        <span>{user.dataNascimento}</span>
+            <>
+                <div className="page" style={{ padding: 0, flexDirection: "row" }}>
+                    <div className="barraLateral">
+                        {user ? (
+                            <div className="userData" style={{ gap: "3rem"}}>
+                                <h1>Bem-vindo, {user.nome}</h1>
+                                <div className="userData" style={{ gap: "2px"}}>
+                                <span style={{ fontWeight: "bold" }}>Nome:</span>
+                                <span>{user.nome} {user.sobrenome}</span>
+                                <br/>
+                                <span style={{ fontWeight: "bold" }}>E-mail:</span>
+                                <span>{user.email}</span>
+                                <br/>
+                                <span style={{ fontWeight: "bold" }}>Data de nascimento:</span>
+                                <span>{user.dataNascimento}</span>
+                                </div>
+                            </div>
+                        ) : (
+                            <p>Carregando...</p>
+                        )}
+                        <div style={{ textAlign: "center" }}>
+                        <button onClick={this.logout}>Sair</button>
+                        </div>
                     </div>
-                ) : (
-                    <p>Carregando...</p>
-                )}
-                <button onClick={this.logout}>Sair</button>
-            </div>
+                    <div className="page" style={{ paddingLeft: "3rem" }}>
+                        <h1>Home</h1>
+                    </div>
+                </div>
+            </>
         );
     }
 }

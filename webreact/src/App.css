@@ -70,3 +70,19 @@
 .link {
   color: black;
 }
+
+.barraLateral {
+  height: 100%;
+  width: 18rem;
+  display: flex;
+  border-right: solid 2px;
+  padding: 1rem;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.userData {
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+}
